@@ -20,12 +20,15 @@ uv add git+https://github.com/wassname/minicache.git
 ```py
 from minicache import cached, cache_call
 
-# 1. Decorator: hashes (state, included args). Excludes drop out of key.
-@cached(exclude=["model", "tok"])
+@cached(exclude=["model", "tok"]) # can't hash model or tokenizer, but model_id will substitute
 def run_eval(model, tok, *, model_id, name, batch_size):
     return tinymfv_evaluate(model, tok, name=name, batch_size=batch_size)
 
 report = run_eval(model, tok, model_id="qwen-27b", name="classic", batch_size=16)
+# 30 minutes
+
+report = run_eval(model, tok, model_id="qwen-27b", name="classic", batch_size=16)
+# 0 minutes, gives saved results
 ```
 
 See also
